@@ -10,7 +10,7 @@ namespace CExpress {
 	class Express
 	{
 	public:
-		void use(std::function<void(CExpress::Request &, CExpress::Response &)>);
+		void use(std::function<void(CExpress::Request &, CExpress::Response &)>&);
 		void route(std::string, std::string, std::function<void(CExpress::Request &, CExpress::Response &)>);
 		void onerror(std::string, std::function<void(CExpress::Request &, CExpress::Response &)>);
 		Express();

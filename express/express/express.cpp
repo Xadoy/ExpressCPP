@@ -192,8 +192,13 @@ void response(SOCKET ClientSocket) {
 }
 
 
-void CExpress::Express::use(std::function<void(CExpress::Request&, CExpress::Response&)>)
+void CExpress::Express::use(std::function<void(CExpress::Request&, CExpress::Response&)>& func)
 {
+  // check if the function is callable, if not then return immediatly.
+  if (!func)
+    throw ("Function warpper without target is not allowed for the use function");
+
+  _middleWares.push_back(func);
 }
 
 void CExpress::Express::route(std::string, std::string, std::function<void(CExpress::Request&, CExpress::Response&)>)
