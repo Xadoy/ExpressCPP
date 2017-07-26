@@ -149,48 +149,6 @@ void response(SOCKET ClientSocket);
 //	return 0;
 //}
 
-void response(SOCKET ClientSocket) {
-	//setsockopt(
-	//	(SOCKET) ClientSocket,      // descriptor identifying a socket 
-	//	(int)SOL_SOCKET,   // level
-	//	(int)SO_KEEPALIVE, // optname
-	//	(char *)optval, // input buffer,
-	//	(int)optlen,  // size of input buffer
-	//	);
-
-	const int DEFAULT_BUFLEN = 2048;
-
-	char recvbuf[DEFAULT_BUFLEN];
-	int iResult, iSendResult;
-	int recvbuflen = DEFAULT_BUFLEN;
-
-	do {
-		// receive until the peer shuts down the connection
-		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
-		if (iResult > 0) {
-			iSendResult = send(ClientSocket, responseStr.c_str(), responseStr.length(), 0);
-			//if (iSendResult == SOCKET_ERROR) {
-			//	cout << "send failed" << endl;
-			//	closesocket(ClientSocket);
-			//	WSACleanup();
-			//	//return;
-			//}
-		}
-		else if (iResult == 0) {
-			cout << "connection closing" << endl;
-			break;
-		}
-		else {
-			cout << "recv failed" << endl;
-			break;
-			//closesocket(ClientSocket);
-			//WSACleanup();
-		}
-	} while (true);
-
-	//closesocket(ClientSocket);
-}
-
 
 void CExpress::Express::use(std::function<void(CExpress::Request&, CExpress::Response&)>& func)
 {
@@ -215,22 +173,20 @@ CExpress::Express::Express()
 
 void CExpress::Express::start(int port)
 {
-	_server = Server();
-	_server.setPort(port);
-	_server.process([=](string incomingStr) {
-		// process incoming str
+  _server = Server();
+  _server.setPort(port);
+  _server.process([=](string incomingStr) {
+    // process incoming str
 
-		string responseStr = "";
+    // TODO:
+    // create a request and a response
+    // go through middleware
+    // find controller
+    // call the controller
+    // fallback try find the file
+    // otherwise, find error handlers
+    // otherwise, return default error page
 
-		// TODO:
-		// create a request and a response
-		// go through middleware
-		// find controller
-		// call the controller
-		// fallback try find the file
-		// otherwise, find error handlers
-
-
-		return responseStr;
-	});
+    return responseStr;
+  });
 }
