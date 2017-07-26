@@ -1,9 +1,11 @@
 #include "response.h"
 
-CExpress::Response::Response()
-{
+using namespace CExpress;
+
+Response::Response() {
+
 }
 
-void CExpress::Response::setBodyWithFile(std::string)
-{
+void Response::setBodyWithFile(std::string) {
+
 }

@@ -1,5 +1,5 @@
 #include "request.h"
 
-CExpress::Request::Request()
-{
-}
+using namespace CExpress;
+
+Request::Request() {}

@@ -150,13 +150,14 @@ void response(SOCKET ClientSocket);
 //}
 
 
+
 void CExpress::Express::use(std::function<void(CExpress::Request&, CExpress::Response&)>& func)
 {
   // check if the function is callable, if not then return immediatly.
   if (!func)
     throw ("Function warpper without target is not allowed for the use function");
 
-  _middleWares.push_back(func);
+  middleWares_.push_back(func);
 }
 
 void CExpress::Express::route(std::string, std::string, std::function<void(CExpress::Request&, CExpress::Response&)>)
@@ -173,9 +174,9 @@ CExpress::Express::Express()
 
 void CExpress::Express::start(int port)
 {
-  _server = Server();
-  _server.setPort(port);
-  _server.process([=](string incomingStr) {
+  server_ = Server();
+  server_.setPort(port);
+  server_.process([=](string incomingStr) {
     // process incoming str
 
     // TODO:

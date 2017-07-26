@@ -3,13 +3,12 @@
 #include <unordered_map>
 
 namespace CExpress {
-	class Request {
-	public:
-		std::unordered_map<std::string, std::string> Parameter;
-		std::unordered_map<std::string, std::string> Query;
-		std::string Body;
-		std::unordered_map<std::string, std::string> Header;
-
-		Request();
-	};
-}
+  class Request {
+  public:
+    Request();
+    std::unordered_map<std::string, std::string> parameters;
+    std::unordered_map<std::string, std::string> queries;
+    std::string body;
+    std::unordered_map<std::string, std::string> headers;
+  };
+} // namespace CExpress

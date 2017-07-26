@@ -4,11 +4,10 @@
 namespace CExpress {
   class Response {
   public:
-    std::unordered_map<std::string, std::string> Header;
-    std::string Body;
-    std::string Status;
-
     Response();
     void setBodyWithFile(std::string);
+    std::unordered_map<std::string, std::string> headers;
+    std::string body;
+    std::string status;
   };
 }
