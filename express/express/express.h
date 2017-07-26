@@ -16,10 +16,13 @@ namespace CExpress {
     Express();
     void start(int port);
 
-  private:
-    std::vector<std::function<void(CExpress::Request &, CExpress::Response &)>> _middleWares;
-    std::unordered_map<CExpress::Route, std::function<void(CExpress::Request &, CExpress::Response &)>> _controllers;
-    std::unordered_map<std::string, std::function<void(CExpress::Request &, CExpress::Response &)>> _errorHandlers;
-    CExpress::Server _server;
-  };
+	private:
+		std::vector<std::function<void(CExpress::Request &, CExpress::Response &)>> _middleWares;
+		std::unordered_map<CExpress::Route, std::function<void(CExpress::Request &, CExpress::Response &)>> _controllers;
+		std::unordered_map<std::string, std::function<void(CExpress::Request &, CExpress::Response &)>> _errorHandlers;
+		CExpress::Server _server;
+
+    static const std::string DEFAULT_404_PAGE;
+    static const std::string DEFAULT_500_PAGE;
+	};
 }

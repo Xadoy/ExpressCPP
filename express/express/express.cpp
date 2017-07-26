@@ -1,4 +1,4 @@
-#ifndef WIN32_LEAN_AND_MEAN
+﻿#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
 
@@ -190,3 +190,6 @@ void CExpress::Express::start(int port)
     return responseStr;
   });
 }
+
+const string CExpress::Express::DEFAULT_404_PAGE = "<html><body> <h1> 404 Not Found 😓 </h1> <hr/> <small>ExpressCPP | <a href=\"https://github.com/AlephTeam/ExpressCPP\" target=\"_blank\">Github</a></small></body></html>";
+const string CExpress::Express::DEFAULT_500_PAGE = "<html><body> <h1> 500 Server Internal Error 😔 </h1> <hr/> <small>ExpressCPP | <a href=\"https://github.com/AlephTeam/ExpressCPP\" target=\"_blank\">Github</a></small></body></html>";
