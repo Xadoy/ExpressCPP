@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <vector>
+
 #include "request.h"
 #include "response.h"
 #include "server.h"
@@ -11,9 +12,9 @@ namespace CExpress {
   class Express
   {
   public:
-    void use(std::function<void(CExpress::Request &, CExpress::Response &)>&);
-    void route(std::string, std::string, std::function<void(CExpress::Request &, CExpress::Response &)>);
-    void onerror(std::string, std::function<void(CExpress::Request &, CExpress::Response &)>);
+    void use(const std::function<void(CExpress::Request &, CExpress::Response &)>&);
+    void route(const std::string&, const std::string&, const std::function<void(CExpress::Request &, CExpress::Response &)>&);
+    void onerror(const std::string&, const std::function<void(CExpress::Request &, CExpress::Response &)>&);
     Express();
     void start(int port);
 

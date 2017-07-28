@@ -9,6 +9,8 @@
 #include <winsock2.h>
 #include <functional>
 
+#pragma comment(lib, "Ws2_32.lib")
+
 namespace CExpress {
   class Server {
   public:
@@ -20,12 +22,12 @@ namespace CExpress {
     listen on port and use the given lambda to process
     the incoming connection and bytes
     */
-    void process(std::function<std::string(std::string)>);
+    void process(const std::function<std::string(std::string)>&);
 
   private:
-    WSADATA wsaData_;
-    SOCKET ListenSocket_;
-    SOCKET ClientSocket_;
+    WSADATA wsa_data_;
+    SOCKET listen_socket_;
+    SOCKET client_socket_;
     struct addrinfo *result_, *ptr_, hints_;
   };
 }

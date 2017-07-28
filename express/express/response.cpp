@@ -6,6 +6,6 @@ Response::Response() {
 
 }
 
-void Response::setBodyWithFile(std::string) {
+void Response::setBodyWithFile(const std::string& file_name) {
 
 }

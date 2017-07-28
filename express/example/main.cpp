@@ -1,12 +1,11 @@
 #include <assert.h>
 #include <iostream>
 
-#include "../express/route.h"
 #include "../express/express.h"
 
 using namespace CExpress;
 
-void testRouteCpp() {
+void testRoute() {
   Route r1(CExpress::POST, "/user/:user/age/:age");
   Route r2(CExpress::POST, "/user/josh/age/19");
   Route r3(CExpress::POST, "/user/josh/age/19/");
@@ -86,10 +85,18 @@ void testRouteCpp() {
   std::cout << "route.cpp unit test completed." << std::endl;
 }
 
-int main() {
-
-  testRouteCpp();
-
+void testExpress() {
   CExpress::Express ex;
+  ex.onerror("404", [=](Request & req, Response & res) {
+
+  });
+  ex.use([=](Request & req, Response & res) {
+
+  });
   ex.start(8080);
+}
+
+int main() {
+  testRoute();
+  testExpress();
 }

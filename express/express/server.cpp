@@ -1,17 +1,18 @@
 #include "server.h"
+
 #include <sstream>
 #include <thread>
-#include <Mstcpip.h>
+#include <mstcpip.h>
 #include <ws2tcpip.h>
 
 void response(SOCKET ClientSocket, std::function<std::string(std::string)> & processor);
 
 CExpress::Server::Server()
 {
-  int iResult;
+  int i_result;
 
-  iResult = WSAStartup(MAKEWORD(2, 2), &wsaData_);
-  if (iResult != 0) {
+  i_result = WSAStartup(MAKEWORD(2, 2), &wsa_data_);
+  if (i_result != 0) {
     throw "wsastartup failed";
   }
 
@@ -27,15 +28,15 @@ CExpress::Server::Server()
 
 void CExpress::Server::setPort(int port)
 {
-  int iResult;
-  iResult = getaddrinfo(NULL, std::to_string(port).c_str(), &hints_, &result_);
-  if (iResult != 0) {
+  int i_result;
+  i_result = getaddrinfo(NULL, std::to_string(port).c_str(), &hints_, &result_);
+  if (i_result != 0) {
     throw "getaddrinfo failed";
   }
 
-  ListenSocket_ = INVALID_SOCKET;
-  ListenSocket_ = socket(result_->ai_family, result_->ai_socktype, result_->ai_protocol);
-  if (iResult != 0) {
+  listen_socket_ = INVALID_SOCKET;
+  listen_socket_ = socket(result_->ai_family, result_->ai_socktype, result_->ai_protocol);
+  if (i_result != 0) {
     freeaddrinfo(result_);
     WSACleanup();
     throw "cannot create socket";
@@ -43,17 +44,17 @@ void CExpress::Server::setPort(int port)
 
   // binding a socket
 
-  iResult = ::bind(ListenSocket_, result_->ai_addr, (int)result_->ai_addrlen);
-  if (iResult == SOCKET_ERROR) {
+  i_result = ::bind(listen_socket_, result_->ai_addr, (int)result_->ai_addrlen);
+  if (i_result == SOCKET_ERROR) {
     freeaddrinfo(result_);
-    closesocket(ListenSocket_);
+    closesocket(listen_socket_);
     WSACleanup();
     throw "binding a socket failed";
   }
 
-  if (listen(ListenSocket_, SOMAXCONN) == SOCKET_ERROR) {
+  if (listen(listen_socket_, SOMAXCONN) == SOCKET_ERROR) {
     freeaddrinfo(result_);
-    closesocket(ListenSocket_);
+    closesocket(listen_socket_);
     WSACleanup();
     throw "listen failed";
   }
@@ -61,16 +62,16 @@ void CExpress::Server::setPort(int port)
   freeaddrinfo(result_);
 }
 
-void CExpress::Server::process(std::function<std::string(std::string)> processor)
+void CExpress::Server::process(const std::function<std::string(std::string)>& processor)
 {
-  ClientSocket_ = INVALID_SOCKET;
+  client_socket_ = INVALID_SOCKET;
 
   while (true) {
     DWORD one = 1;
-    ClientSocket_ = accept(ListenSocket_, NULL, NULL);
+    client_socket_ = accept(listen_socket_, NULL, NULL);
 
     BOOL bKeepAlive = TRUE;
-    int nRet = setsockopt(ClientSocket_, SOL_SOCKET, SO_KEEPALIVE,
+    int nRet = setsockopt(client_socket_, SOL_SOCKET, SO_KEEPALIVE,
       (char*)&bKeepAlive, sizeof(bKeepAlive));
     if (nRet == SOCKET_ERROR)
     {
@@ -83,28 +84,28 @@ void CExpress::Server::process(std::function<std::string(std::string)> processor
     alive_in.keepaliveinterval = 1000; //1s  
     alive_in.onoff = TRUE;
     unsigned long ulBytesReturn = 0;
-    nRet = WSAIoctl(ClientSocket_, SIO_KEEPALIVE_VALS, &alive_in, sizeof(alive_in),
+    nRet = WSAIoctl(client_socket_, SIO_KEEPALIVE_VALS, &alive_in, sizeof(alive_in),
       &alive_out, sizeof(alive_out), &ulBytesReturn, NULL, NULL);
     if (nRet == SOCKET_ERROR)
     {
       throw "WSAIoctl failed";
     }
 
-    std::thread responseThread(&response, ClientSocket_, processor);
+    std::thread responseThread(&response, client_socket_, processor);
     responseThread.detach();
   }
 
-  int iResult = shutdown(ClientSocket_, SD_SEND);
-  if (iResult == SOCKET_ERROR) {
-    closesocket(ListenSocket_);
-    closesocket(ClientSocket_);
+  int i_result = shutdown(client_socket_, SD_SEND);
+  if (i_result == SOCKET_ERROR) {
+    closesocket(listen_socket_);
+    closesocket(client_socket_);
     WSACleanup();
     throw "shutdown failed:\n";
   }
 
 
-  closesocket(ClientSocket_);
-  closesocket(ListenSocket_);
+  closesocket(client_socket_);
+  closesocket(listen_socket_);
   WSACleanup();
 }
 
@@ -114,13 +115,13 @@ void response(SOCKET ClientSocket, std::function<std::string(std::string)> & pro
   const int DEFAULT_BUFLEN = 2048;
 
   char recvbuf[DEFAULT_BUFLEN];
-  int iResult, iSendResult;
+  int i_result, iSendResult;
   int recvbuflen = DEFAULT_BUFLEN;
 
   while (true) {
     // receive until the peer shuts down the connection
-    iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
-    if (iResult > 0) {
+    i_result = recv(ClientSocket, recvbuf, recvbuflen, 0);
+    if (i_result > 0) {
 
       std::string incomingStr(recvbuf);
       std::string result = processor(incomingStr);
@@ -131,7 +132,7 @@ void response(SOCKET ClientSocket, std::function<std::string(std::string)> & pro
         //throw "send failed";
       }
     }
-    else if (iResult == 0) {
+    else if (i_result == 0) {
       break;
     }
     else {
