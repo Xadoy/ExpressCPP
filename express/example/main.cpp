@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <iostream>
-
 #include "../express/express.h"
 
 using namespace CExpress;
@@ -82,7 +81,7 @@ void testRoute() {
   assert(r21.matches(r22));
   assert(r22.matches(r21));
 
-  std::cout << "route.cpp unit test completed." << std::endl;
+  std::cout << "route unit test completed." << std::endl;
 }
 
 void testExpress() {
@@ -96,7 +95,36 @@ void testExpress() {
   ex.start(8080);
 }
 
+void testResponse() {
+  CExpress::Response r;
+  r.setBodyWithFile("./hello.html");
+  assert(r.body == "<HTML>\n\
+<HEAD>\n\
+<META NAME=\"GENERATOR\" Content=\"Microsoft Visual Studio\">\n\
+<TITLE></TITLE>\n\
+</HEAD>\n\
+<BODY>\n\
+  <h1>Hello From ExpressCPP</h1>\n\
+\n\
+\n\
+</BODY>\n\
+</HTML>\n");
+
+  try {
+    r.setBodyWithFile("nonexist.html");
+    // expected to jump to catch as "nonexist.html" does not
+    // exists in the context
+    assert(false);
+  }
+  catch (const char * e) {
+    assert(true);
+  }
+
+  std::cout << "response unit test complete" << std::endl;
+}
+
 int main() {
   testRoute();
+  testResponse();
   testExpress();
 }
