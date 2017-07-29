@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "express.h"
+#include "helper.h"
 
 void CExpress::Express::use(const std::function<void(CExpress::Request&, CExpress::Response&)>& middleware_handler)
 {
@@ -14,6 +15,15 @@ void CExpress::Express::use(const std::function<void(CExpress::Request&, CExpres
 
 void CExpress::Express::route(const std::string& method, const std::string& route, const std::function<void(CExpress::Request&, CExpress::Response&)>& route_handler)
 {
+  CExpress::RequestType request_type = getRequestTypeFromString(method);
+
+  Route r(request_type, route);
+
+  if (!route_handler) {
+    throw "Function warpper without target is not allowed for the route function";
+  }
+
+  controllers_.push_back({ r, route_handler });
 }
 
 void CExpress::Express::onerror(const std::string& error_code, const std::function<void(CExpress::Request&, CExpress::Response&)>& error_handler)

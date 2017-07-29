@@ -92,6 +92,9 @@ void testExpress() {
   ex.use([=](Request & req, Response & res) {
 
   });
+  ex.route("GET", "/user/:userid", [=](Request & req, Response & res) {
+
+  });
   ex.start(8080);
 }
 
