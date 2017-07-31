@@ -24,7 +24,9 @@ Route::Route(RequestType t, const std::string & p) {
     int questionIndex = lastToken.find(querySign);
     if (questionIndex != std::string::npos) {
       lastToken = lastToken.substr(0, questionIndex);
-    }
+    } 
+  } else {
+    pathTokens.push_back("");
   }
 
   for (std::string & s : pathTokens) {

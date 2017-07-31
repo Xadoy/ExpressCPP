@@ -70,10 +70,12 @@ void testRoute() {
   Route r18(CExpress::POST, "/");
   Route r19(CExpress::POST, "/:id");
   Route r20(CExpress::POST, "/index?id=123");
+  Route r23(CExpress::POST, "/?id=123");
 
   assert(r18.matches(r18));
   assert(r19.matches(r20));
   assert(r20.matches(r19));
+  assert(r18.matches(r23));
 
   Route r21(CExpress::POST, "/user/book");
   Route r22(CExpress::POST, "/user/book?bookid=199283442");
