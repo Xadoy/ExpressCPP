@@ -123,7 +123,7 @@ void response(SOCKET ClientSocket, std::function<std::string(std::string)> & pro
     i_result = recv(ClientSocket, recvbuf, recvbuflen, 0);
     if (i_result > 0) {
 
-      std::string incomingStr(recvbuf);
+      std::string incomingStr(std::string(recvbuf).substr(0, i_result));
       std::string result = processor(incomingStr);
 
       iSendResult = send(ClientSocket, result.c_str(), result.length(), 0);
