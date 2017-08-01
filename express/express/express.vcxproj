@@ -127,6 +127,7 @@
     <ClCompile Include="response.cpp" />
     <ClCompile Include="route.cpp" />
     <ClCompile Include="server.cpp" />
+    <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="express.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="response.h" />
     <ClInclude Include="route.h" />
     <ClInclude Include="server.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

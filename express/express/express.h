@@ -19,12 +19,25 @@ namespace CExpress {
     void start(int port);
 
   private:
-    std::vector<std::function<void(CExpress::Request &, CExpress::Response &)>> middleWares_;
+    std::vector<std::function<void(CExpress::Request &, CExpress::Response &)>> middlewares_;
     std::vector<std::pair<CExpress::Route, std::function<void(CExpress::Request &, CExpress::Response &)>>> controllers_;
-    std::unordered_map<std::string, std::function<void(CExpress::Request &, CExpress::Response &)>> errorHandlers_;
+    std::unordered_map<std::string, std::function<void(CExpress::Request &, CExpress::Response &)>> error_handlers_;
     CExpress::Server server_;
+
+    void handle500(Request &, Response &, const char * errorMsg = nullptr) const;
+    void handle404(Request &, Response &) const;
+
+    // set parameters with pathTokens and route
+    void setRquestParameters(Request&, const std::vector<std::string>&, const std::vector<std::string>&);
+
+    void setRequestQueryParameters(Request & request, std::string & attributes);
+
+    void setRequestHeaders(Request & request, std::string & request_header);
 
     static const std::string DEFAULT_404_PAGE;
     static const std::string DEFAULT_500_PAGE;
+    static const std::string STATUS_CODE_200;
+    static const std::string STATUS_CODE_404;
+    static const std::string STATUS_CODE_500;
 	};
 }

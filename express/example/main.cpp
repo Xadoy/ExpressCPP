@@ -88,16 +88,18 @@ void testRoute() {
 
 void testExpress() {
   CExpress::Express ex;
-  ex.onerror("404", [=](Request & req, Response & res) {
-
-  });
   ex.use([=](Request & req, Response & res) {
 
   });
-  ex.route("GET", "/user/:userid", [=](Request & req, Response & res) {
-
+  ex.route("GET", "/add/:a/:b", [=](Request & req, Response & res) {
+    res.body = std::string(std::to_string(std::atoi(req.parameters["a"].c_str()) + std::atoi(req.parameters["b"].c_str())));
   });
+  ex.route("GET", "/gettext", [=](Request & req, Response & res) {
+    res.body = req.queries["text"];
+  });
+  
   ex.start(8080);
+  std::cout << "express unit test completed." << std::endl;
 }
 
 void testResponse() {
@@ -115,15 +117,7 @@ void testResponse() {
 </BODY>\n\
 </HTML>\n");
 
-  try {
-    r.setBodyWithFile("nonexist.html");
-    // expected to jump to catch as "nonexist.html" does not
-    // exists in the context
-    assert(false);
-  }
-  catch (const char * e) {
-    assert(true);
-  }
+  assert(!r.setBodyWithFile("nonexist.html"));
 
   std::cout << "response unit test complete" << std::endl;
 }

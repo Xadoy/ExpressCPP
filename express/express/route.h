@@ -25,8 +25,6 @@ namespace CExpress {
     RequestType requestType;
 
     std::vector<std::string> pathTokens;
-
-    void splitString(const std::string &s, const char delim, std::vector<std::string>& elems) const;
   };
 }
 

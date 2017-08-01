@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft Visual Studio">
+<TITLE>ExpressCpp</TITLE>
+<link rel="stylesheet" type="text/css" href="index.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(() => {
+        $("#a, #b").on('input', () => {
+            $.ajax({
+                method: "GET",
+                url: "add/" + $("#a").val() + "/" + $("#b").val(),
+                success: (res) => {
+                    $("#answer").text(res);
+                }
+            })
+        });
+    });
+</script>
+</HEAD>
+<BODY>
+  <h1>Hello From ExpressCPP</h1>
+  <input type="number" id="a" /> + <input type="number" id="b" /> = <span id="answer"></span>
+</BODY>
+</HTML>
