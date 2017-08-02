@@ -15,7 +15,7 @@
 
 At this time, only Windows is supported. We recommend to use ExpressCPP together with [Visual Studio](https://www.visualstudio.com/).
 
-Download the necessary files (one `.lib` and some `.h` files) from the [release](https://github.com/AlephTeam/ExpressCPP/releases) page.
+Download the necessary files (some `.lib` and `.h` files) from the [release](https://github.com/AlephTeam/ExpressCPP/releases) page.
 
 Create or use existing C++ project. Right click the project in solution view, and include the path to the header and lib files. Under `C/C++ > General > Additional Include Directories`, edit to add the path that contains the the header files. Similarly, under `Linker > General > Additional Library Directories`, edit to add the path that contains the lib files.
 
