@@ -4,13 +4,6 @@
 |---|---|
 | v0.1.0 | Arborvitae |
 
-## Table of Contents
-
-* [Installation](#installation)
-* [Get Started](#get-started)
-* [What's Next](#whats-next)
-* [Contributing](#contributing)
-
 ## Installation
 
 At this time, only Windows is supported. We recommend to use ExpressCPP together with [Visual Studio](https://www.visualstudio.com/).
@@ -104,8 +97,6 @@ ex.onerror("404", [=](Request & req, Response & res) {
 ```
 
 >If you define multiple error handlers for the same error code, the one that actually runs will be random. We are internally using `unordered_map`.
-
-For more complete documentation, visit our [website](https://alephteam.github.io/ExpressCPP/).
 
 ## Contributing
 

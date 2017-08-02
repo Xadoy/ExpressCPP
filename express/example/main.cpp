@@ -97,7 +97,9 @@ void testExpress() {
   ex.route("GET", "/gettext", [=](Request & req, Response & res) {
     res.body = req.queries["text"];
   });
-  
+  ex.onerror("404", [=](Request & req, Response & res) {
+    res.body = "error";
+  });
   ex.start(8080);
   std::cout << "express unit test completed." << std::endl;
 }

@@ -183,7 +183,6 @@ void CExpress::Express::setRequestQueryParameters(Request &request, std::string 
 
 // set headers for Request
 void CExpress::Express::setRequestHeaders(Request &request, std::string &request_header) {
-  std::cout << request_header << std::endl;
   std::istringstream ss(request_header);
   std::string header;
   while (std::getline(ss, header)) {

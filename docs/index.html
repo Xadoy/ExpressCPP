@@ -1,0 +1,100 @@
+<!doctype html><html><head><meta charset='utf-8'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.4.1/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css">
+<link rel="stylesheet" href="https://gitcdn.xyz/repo/goessner/mdmath/master/css/mdmath.css">
+</head><body class="markdown-body">
+<h1>ExpressCPP</h1>
+<table>
+<thead>
+<tr>
+<th>Current Version</th>
+<th>Code Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v0.1.0</td>
+<td>Arborvitae</td>
+</tr>
+</tbody>
+</table>
+<h2>Installation</h2>
+<p>At this time, only Windows is supported. We recommend to use ExpressCPP together with <a href="https://www.visualstudio.com/">Visual Studio</a>.</p>
+<p>Download the necessary files (one <code>.lib</code> and some <code>.h</code> files) from the <a href="https://github.com/AlephTeam/ExpressCPP/releases">release</a> page.</p>
+<p>Create or use existing C++ project. Right click the project in solution view, and include the path to the header and lib files. Under <code>C/C++ &gt; General &gt; Additional Include Directories</code>, edit to add the path that contains the the header files. Similarly, under <code>Linker &gt; General &gt; Additional Library Directories</code>, edit to add the path that contains the lib files.</p>
+<p>ExpressCPP requires <code>Ws2_32.lib</code> which should be already installed on your computer.</p>
+<h2>Get Started</h2>
+<p>First, create a <code>Express</code> instance. We recommend use singleton pattern but it is not required.</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"CExpress\express.h"</span></span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> _DEBUG</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"CExpress\\express_debug.lib"</span>)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"CExpress\\express_release.lib"</span>)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span>  </span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    CExpress::Express ex;
+}
+</div></code></pre>
+<p>The above example, I put all the headers and lib files under directory <code>CExpress</code> that is at the same level as this code file. <code>_DEBUG</code> flag will be defined if you set &quot;Debug&quot; in the configuration manager.</p>
+<blockquote>
+<p><code>using namespace CExpress</code> is ok if you know it does not create any ambiguity.</p>
+</blockquote>
+<p>Then, we can create a controller:</p>
+<pre class="hljs"><code><div>ex.route(<span class="hljs-string">"GET"</span>, <span class="hljs-string">"/"</span>, [=](Request &amp; req, Response &amp; res) {
+  res.body = <span class="hljs-string">"&lt;h1&gt;Hello World&lt;/h1&gt;"</span>;
+  res.headers[<span class="hljs-string">"Content-Type"</span>] = <span class="hljs-string">"text/html; charset=utf-8"</span>;
+});
+</div></code></pre>
+<blockquote>
+<p>If the request url match multiple controllers, only the first one we find will be executed.</p>
+</blockquote>
+<p>Lastly, start the server:</p>
+<pre class="hljs"><code><div>ex.start(<span class="hljs-number">8080</span>);
+</div></code></pre>
+<p>That's it! The complete code for hello world program is</p>
+<pre class="hljs"><code><div><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">"CExpress\express.h"</span></span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> _DEBUG</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"CExpress\\express_debug.lib"</span>)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"CExpress\\express_release.lib"</span>)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span> </span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    CExpress::Express ex;
+    ex.route(<span class="hljs-string">"GET"</span>, <span class="hljs-string">"/"</span>, [=](Request &amp; req, Response &amp; res) {
+        res.body = <span class="hljs-string">"&lt;h1&gt;Hello World&lt;/h1&gt;"</span>;
+        res.headers[<span class="hljs-string">"Content-Type"</span>] = <span class="hljs-string">"text/html; charset=utf-8"</span>;
+    });
+    ex.start(<span class="hljs-number">8080</span>);
+}
+</div></code></pre>
+<blockquote>
+<p>Note that you need to set the content type to html if you are passing back html to the client. Because you are taking reference of <code>Request</code> and <code>Response</code> it is unnecessary to return anything. Also, <code>ex.start(8080)</code> needs to be the last line of your program.</p>
+</blockquote>
+<h2>What's Next</h2>
+<p>Create a middleware by</p>
+<pre class="hljs"><code><div>ex.use([=](Request &amp; req, Response &amp; res) {
+    <span class="hljs-comment">// process the request and response here</span>
+});
+</div></code></pre>
+<blockquote>
+<p>The execution of middleware is the same as your declaration order.</p>
+</blockquote>
+<p>Crate an error handler like this:</p>
+<pre class="hljs"><code><div>ex.onerror(<span class="hljs-string">"404"</span>, [=](Request &amp; req, Response &amp; res) {
+    <span class="hljs-comment">// process error here</span>
+});
+</div></code></pre>
+<blockquote>
+<p>If you define multiple error handlers for the same error code, the one that actually runs will be random. We are internally using <code>unordered_map</code>.</p>
+</blockquote>
+<h2>Contributing</h2>
+<p>We love your <a href="https://github.com/AlephTeam/ExpressCPP/issues">feedback</a>. This repository is under <a href="https://github.com/AlephTeam/ExpressCPP/blob/master/LICENSE">MIT license</a>. Fork as you like 👍.</p>
+<hr>
+<p>©️ 2017 The Aleph Team</p>
+
+</body></html>
