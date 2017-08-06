@@ -30,7 +30,7 @@ namespace CExpress {
     // set parameters with pathTokens and route
     void setRquestParameters(Request&, const std::vector<std::string>&, const std::vector<std::string>&);
 
-    void setRequestQueryParameters(Request & request, std::string & attributes);
+    void setRequestQueryParameters(Request & request, const std::string & attributes);
 
     void setRequestHeaders(Request & request, std::string & request_header);
 

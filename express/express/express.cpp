@@ -171,7 +171,7 @@ void CExpress::Express::setRquestParameters(Request &request, const std::vector<
 }
 
 // set queries for Request
-void CExpress::Express::setRequestQueryParameters(Request &request, std::string &attributes) {
+void CExpress::Express::setRequestQueryParameters(Request &request, const std::string &attributes) {
   std::vector<std::string> queries_str = std::vector<std::string>();
   splitString(attributes, '&', queries_str);
   for (const auto &query_str : queries_str) {

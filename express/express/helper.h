@@ -38,4 +38,5 @@ CExpress::RequestType getRequestTypeFromString(const std::string & method) {
   else {
     throw "unable to determine request type";
   }
+  return CExpress::RequestType::GET;
 }
